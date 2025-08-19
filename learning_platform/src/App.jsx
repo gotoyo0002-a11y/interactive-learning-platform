@@ -7,6 +7,7 @@ import { CoursesPage } from './pages/CoursesPage'
 import { AdminDashboard } from './pages/admin/AdminDashboard'
 import { CourseCreatePage } from './pages/admin/CourseCreatePage'
 import UserManagementPage from './pages/admin/UserManagementPage'
+import AdminCourseManagementPage from './pages/admin/CourseManagementPage'
 import { ActivityLogs } from './pages/admin/ActivityLogs'
 import CourseManagementPage from './pages/teacher/CourseManagementPage'
 import ProtectedRoute from './components/ProtectedRoute'
@@ -40,7 +41,8 @@ function App() {
           <Route element={<ProtectedRoute allowedRoles={['admin']} />}>
             <Route path="admin/dashboard" element={<AdminDashboard />} />
             <Route path="admin/courses/create" element={<CourseCreatePage />} />
-            <Route path="admin/users" element={<UserManagementPage />} />
+            <Route path="admin/user-management" element={<UserManagementPage />} />
+            <Route path="admin/course-management" element={<AdminCourseManagementPage />} />
             <Route path="admin/activities" element={<ActivityLogs />} />
           </Route>
 

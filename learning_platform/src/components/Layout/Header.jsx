@@ -123,26 +123,27 @@ export function Header() {
                       <BookOpen className="mr-2 h-4 w-4" />
                       我的課程
                     </Link>
-                  </DropdownMe                  {profile?.role === \'admin\' && (
+                  </DropdownMenuItem>
+                  {profile?.role === 'admin' && (
                     <DropdownMenuItem asChild>
-                      <Link to=\'/admin/dashboard\' className=\'flex items-center\'>
-                        <Settings className=\'mr-2 h-4 w-4\' />
+                      <Link to='/admin/dashboard' className='flex items-center'>
+                        <Settings className='mr-2 h-4 w-4' />
                         儀表板
                       </Link>
                     </DropdownMenuItem>
                   )}
-                  {(profile?.role === \'admin\' || profile?.role === \'teacher\') && (
+                  {(profile?.role === 'admin' || profile?.role === 'teacher') && (
                     <DropdownMenuItem asChild>
-                      <Link to=\'/admin/course-management\' className=\'flex items-center\'>
-                        <BookOpen className=\'mr-2 h-4 w-4\' />
+                      <Link to='/admin/course-management' className='flex items-center'>
+                        <BookOpen className='mr-2 h-4 w-4' />
                         課程管理
                       </Link>
                     </DropdownMenuItem>
                   )}
-                  {profile?.role === \'admin\' && (
+                  {profile?.role === 'admin' && (
                     <DropdownMenuItem asChild>
-                      <Link to=\'/admin/user-management\' className=\'flex items-center\'>
-                        <User className=\'mr-2 h-4 w-4\' />
+                      <Link to='/admin/user-management' className='flex items-center'>
+                        <User className='mr-2 h-4 w-4' />
                         使用者管理
                       </Link>
                     </DropdownMenuItem>

@@ -39,34 +39,20 @@ export function AdminDashboard() {
 
   const fetchStats = async () => {
     try {
-      // 獲取課程總數
-      const { count: coursesCount } = await supabase
-        .from('courses')
-        .select('*', { count: 'exact', head: true })
+      const { data, error } = await supabase.rpc("get_platform_stats")
 
-      // 獲取用戶總數
-      const { count: usersCount } = await supabase
-        .from('user_profiles')
-        .select('*', { count: 'exact', head: true })
-
-      // 獲取選課總數
-      const { count: enrollmentsCount } = await supabase
-        .from('course_enrollments')
-        .select('*', { count: 'exact', head: true })
-
-      // 獲取作業總數
-      const { count: assignmentsCount } = await supabase
-        .from('assignments')
-        .select('*', { count: 'exact', head: true })
+      if (error) throw error
 
       setStats({
-        totalCourses: coursesCount || 0,
-        totalUsers: usersCount || 0,
-        totalEnrollments: enrollmentsCount || 0,
-        totalAssignments: assignmentsCount || 0
+        totalCourses: data.total_courses || 0,
+        totalUsers: data.total_users || 0,
+        totalEnrollments: 0, // RPC 函數未提供此數據，暫時設為 0
+        totalAssignments: 0, // RPC 函數未提供此數據，暫時設為 0
+        totalTeachers: data.total_teachers || 0,
+        totalStudents: data.total_students || 0
       })
     } catch (error) {
-      console.error('Error fetching stats:', error)
+      console.error("Error fetching stats:", error)
     }
   }
 
@@ -99,14 +85,14 @@ export function AdminDashboard() {
       title: '用戶管理',
       description: '管理系統用戶',
       icon: Users,
-      href: '/admin/users',
+      href: '/admin/user-management',
       color: 'text-secondary'
     },
     {
-      title: '數據分析',
-      description: '查看平台數據',
-      icon: BarChart3,
-      href: '/admin/analytics',
+      title: '課程管理',
+      description: '管理所有課程',
+      icon: BookOpen,
+      href: '/admin/course-management',
       color: 'text-accent'
     },
     {
@@ -120,32 +106,46 @@ export function AdminDashboard() {
 
   const statCards = [
     {
-      title: '課程總數',
+      title: \'課程總數\
       value: stats.totalCourses,
       icon: BookOpen,
-      color: 'text-primary',
-      bgColor: 'bg-primary/10'
+      color: \'text-primary\
+      bgColor: \'bg-primary/10\'
     },
     {
-      title: '用戶總數',
+      title: \'用戶總數\
       value: stats.totalUsers,
       icon: Users,
-      color: 'text-secondary',
-      bgColor: 'bg-secondary/10'
+      color: \'text-secondary\
+      bgColor: \'bg-secondary/10\'
     },
     {
-      title: '選課總數',
+      title: \'教師總數\
+      value: stats.totalTeachers,
+      icon: Users,
+      color: \'text-green-600\
+      bgColor: \'bg-green-100\'
+    },
+    {
+      title: \'學生總數\
+      value: stats.totalStudents,
+      icon: Users,
+      color: \'text-blue-600\
+      bgColor: \'bg-blue-100\'
+    },
+    {
+      title: \'選課總數\
       value: stats.totalEnrollments,
       icon: Award,
-      color: 'text-accent',
-      bgColor: 'bg-accent/10'
+      color: \'text-accent\
+      bgColor: \'bg-accent/10\'
     },
     {
-      title: '作業總數',
+      title: \'作業總數\
       value: stats.totalAssignments,
       icon: FileText,
-      color: 'text-orange-600',
-      bgColor: 'bg-orange-100'
+      color: \'text-orange-600\
+      bgColor: \'bg-orange-100\'
     }
   ]
 
