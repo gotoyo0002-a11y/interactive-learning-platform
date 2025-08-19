@@ -6,8 +6,10 @@ import { LoginPage } from './pages/LoginPage'
 import { CoursesPage } from './pages/CoursesPage'
 import { AdminDashboard } from './pages/admin/AdminDashboard'
 import { CourseCreatePage } from './pages/admin/CourseCreatePage'
-import { UserManagement } from './pages/admin/UserManagement'
+import UserManagementPage from './pages/admin/UserManagementPage'
 import { ActivityLogs } from './pages/admin/ActivityLogs'
+import CourseManagementPage from './pages/teacher/CourseManagementPage'
+import ProtectedRoute from './components/ProtectedRoute'
 import { useAuthStore } from './stores/authStore'
 import './App.css'
 
@@ -33,10 +35,20 @@ function App() {
           <Route index element={<HomePage />} />
           <Route path="login" element={<LoginPage />} />
           <Route path="courses" element={<CoursesPage />} />
-          <Route path="admin" element={<AdminDashboard />} />
-          <Route path="admin/courses/create" element={<CourseCreatePage />} />
-          <Route path="admin/users" element={<UserManagement />} />
-          <Route path="admin/activities" element={<ActivityLogs />} />
+
+          {/* Admin Routes */}
+          <Route element={<ProtectedRoute allowedRoles={['admin']} />}>
+            <Route path="admin/dashboard" element={<AdminDashboard />} />
+            <Route path="admin/courses/create" element={<CourseCreatePage />} />
+            <Route path="admin/users" element={<UserManagementPage />} />
+            <Route path="admin/activities" element={<ActivityLogs />} />
+          </Route>
+
+          {/* Teacher Routes */}
+          <Route element={<ProtectedRoute allowedRoles={['teacher', 'admin']} />}>
+            <Route path="teacher/course-management" element={<CourseManagementPage />} />
+          </Route>
+
         </Route>
       </Routes>
     </Router>

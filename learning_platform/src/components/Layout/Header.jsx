@@ -27,15 +27,37 @@ export function Header() {
 
   const handleSignOut = async () => {
     await signOut()
-    navigate('/')
+    navigate(\'/\')
   }
 
-  const navigation = [
-    { name: '首頁', href: '/' },
-    { name: '課程', href: '/courses' },
-    { name: '我的課程', href: '/my-courses' },
-    { name: '作業中心', href: '/assignments' },
+  const baseNavigation = [
+    { name: \'首頁\', href: \'/\' },
+    { name: \'課程\', href: \'/courses\' },
   ]
+
+  let roleSpecificNavigation = []
+  if (profile?.role === \'student\') {
+    roleSpecificNavigation = [
+      { name: \'我的課程\', href: \'/my-courses\' },
+      { name: \'作業中心\', href: \'/assignments\' },
+    ]
+  } else if (profile?.role === \'teacher\') {
+    roleSpecificNavigation = [
+      { name: \'我的課程\', href: \'/my-courses\' },
+      { name: \'課程管理\', href: \'/teacher/course-management\' },
+      { name: \'作業中心\', href: \'/assignments\' },
+    ]
+  } else if (profile?.role === \'admin\') {
+    roleSpecificNavigation = [
+      { name: \'儀表板\', href: \'/admin/dashboard\' },
+      { name: \'使用者管理\', href: \'/admin/user-management\' },
+      { name: \'課程管理\', href: \'/admin/course-management\' },
+      { name: \'我的課程\', href: \'/my-courses\' },
+      { name: \'作業中心\', href: \'/assignments\' },
+    ]
+  }
+
+  const navigation = user ? [...baseNavigation, ...roleSpecificNavigation] : baseNavigation
 
   return (
     <header className="bg-white shadow-sm border-b">
@@ -101,12 +123,27 @@ export function Header() {
                       <BookOpen className="mr-2 h-4 w-4" />
                       我的課程
                     </Link>
-                  </DropdownMenuItem>
-                  {user.user_metadata?.role === 'admin' && (
+                  </DropdownMe                  {profile?.role === \'admin\' && (
                     <DropdownMenuItem asChild>
-                      <Link to="/admin" className="flex items-center">
-                        <Settings className="mr-2 h-4 w-4" />
-                        管理後台
+                      <Link to=\'/admin/dashboard\' className=\'flex items-center\'>
+                        <Settings className=\'mr-2 h-4 w-4\' />
+                        儀表板
+                      </Link>
+                    </DropdownMenuItem>
+                  )}
+                  {(profile?.role === \'admin\' || profile?.role === \'teacher\') && (
+                    <DropdownMenuItem asChild>
+                      <Link to=\'/admin/course-management\' className=\'flex items-center\'>
+                        <BookOpen className=\'mr-2 h-4 w-4\' />
+                        課程管理
+                      </Link>
+                    </DropdownMenuItem>
+                  )}
+                  {profile?.role === \'admin\' && (
+                    <DropdownMenuItem asChild>
+                      <Link to=\'/admin/user-management\' className=\'flex items-center\'>
+                        <User className=\'mr-2 h-4 w-4\' />
+                        使用者管理
                       </Link>
                     </DropdownMenuItem>
                   )}
