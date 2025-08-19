@@ -5,13 +5,26 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '.
 import { Input } from '../../components/ui/input';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '../../components/ui/select';
 import { Button } from '../../components/ui/button';
-import { Search, Loader2 } from 'lucide-react';
+import { Search, Loader2, PlusCircle } from 'lucide-react';
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from '../../components/ui/dialog';
+import { Label } from '../../components/ui/label';
+import { Alert, AlertDescription } from '../../components/ui/alert';
 
 const UserManagementPage = () => {
   const [users, setUsers] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [searchTerm, setSearchTerm] = useState('');
+  const [isCreateUserModalOpen, setIsCreateUserModalOpen] = useState(false);
+  const [newUserData, setNewUserData] = useState({
+    email: '',
+    password: '',
+    first_name: '',
+    last_name: '',
+    role: 'student'
+  });
+  const [createUserError, setCreateUserError] = useState(null);
+  const [createUserSuccess, setCreateUserSuccess] = useState(null);
 
   useEffect(() => {
     fetchUsers();
@@ -61,6 +74,55 @@ const UserManagementPage = () => {
     }
   };
 
+  const handleNewUserInputChange = (field, value) => {
+    setNewUserData(prev => ({
+      ...prev,
+      [field]: value
+    }));
+  };
+
+  const handleCreateUser = async () => {
+    setCreateUserError(null);
+    setCreateUserSuccess(null);
+    try {
+      const response = await fetch('https://5000-i7cgs97o0tt2iqq1moivr-8023fc20.manusvm.computer/api/admin/users', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          email: newUserData.email,
+          password: newUserData.password,
+          user_data: {
+            first_name: newUserData.first_name,
+            last_name: newUserData.last_name,
+            role: newUserData.role
+          }
+        }),
+      });
+
+      const result = await response.json();
+
+      if (response.ok) {
+        setCreateUserSuccess('用戶創建成功！');
+        setIsCreateUserModalOpen(false);
+        fetchUsers(); // Refresh user list
+        setNewUserData({
+          email: '',
+          password: '',
+          first_name: '',
+          last_name: '',
+          role: 'student'
+        });
+      } else {
+        setCreateUserError(result.error || '創建用戶失敗');
+      }
+    } catch (err) {
+      console.error('Error creating user:', err);
+      setCreateUserError(err.message || '創建用戶時發生錯誤');
+    }
+  };
+
   const filteredUsers = users.filter(user => {
     const fullName = `${user.first_name || ''} ${user.last_name || ''}`.toLowerCase();
     const email = user.auth_users?.email?.toLowerCase() || '';
@@ -91,15 +153,21 @@ const UserManagementPage = () => {
       <Card>
         <CardHeader className="flex flex-row justify-between items-center">
           <CardTitle>所有使用者</CardTitle>
-          <div className="relative w-full max-w-sm">
-            <Search className="absolute left-2 top-2.5 h-4 w-4 text-muted-foreground" />
-            <Input
-              type="text"
-              placeholder="搜尋使用者 (姓名或Email)..."
-              value={searchTerm}
-              onChange={(e) => setSearchTerm(e.target.value)}
-              className="pl-8"
-            />
+          <div className="flex items-center space-x-4">
+            <div className="relative w-full max-w-sm">
+              <Search className="absolute left-2 top-2.5 h-4 w-4 text-muted-foreground" />
+              <Input
+                type="text"
+                placeholder="搜尋使用者 (姓名或Email)..."
+                value={searchTerm}
+                onChange={(e) => setSearchTerm(e.target.value)}
+                className="pl-8"
+              />
+            </div>
+            <Button onClick={() => setIsCreateUserModalOpen(true)}>
+              <PlusCircle className="h-4 w-4 mr-2" />
+              新增使用者
+            </Button>
           </div>
         </CardHeader>
         <CardContent>
@@ -149,6 +217,80 @@ const UserManagementPage = () => {
           )}
         </CardContent>
       </Card>
+
+      <Dialog open={isCreateUserModalOpen} onOpenChange={setIsCreateUserModalOpen}>
+        <DialogContent className="sm:max-w-[425px]">
+          <DialogHeader>
+            <DialogTitle>新增使用者</DialogTitle>
+          </DialogHeader>
+          <div className="grid gap-4 py-4">
+            {createUserError && (
+              <Alert variant="destructive">
+                <AlertDescription>{createUserError}</AlertDescription>
+              </Alert>
+            )}
+            {createUserSuccess && (
+              <Alert>
+                <AlertDescription>{createUserSuccess}</AlertDescription>
+              </Alert>
+            )}
+            <div className="grid grid-cols-4 items-center gap-4">
+              <Label htmlFor="email" className="text-right">Email</Label>
+              <Input
+                id="email"
+                type="email"
+                value={newUserData.email}
+                onChange={(e) => handleNewUserInputChange('email', e.target.value)}
+                className="col-span-3"
+              />
+            </div>
+            <div className="grid grid-cols-4 items-center gap-4">
+              <Label htmlFor="password" className="text-right">密碼</Label>
+              <Input
+                id="password"
+                type="password"
+                value={newUserData.password}
+                onChange={(e) => handleNewUserInputChange('password', e.target.value)}
+                className="col-span-3"
+              />
+            </div>
+            <div className="grid grid-cols-4 items-center gap-4">
+              <Label htmlFor="first_name" className="text-right">名</Label>
+              <Input
+                id="first_name"
+                value={newUserData.first_name}
+                onChange={(e) => handleNewUserInputChange('first_name', e.target.value)}
+                className="col-span-3"
+              />
+            </div>
+            <div className="grid grid-cols-4 items-center gap-4">
+              <Label htmlFor="last_name" className="text-right">姓</Label>
+              <Input
+                id="last_name"
+                value={newUserData.last_name}
+                onChange={(e) => handleNewUserInputChange('last_name', e.target.value)}
+                className="col-span-3"
+              />
+            </div>
+            <div className="grid grid-cols-4 items-center gap-4">
+              <Label htmlFor="role" className="text-right">角色</Label>
+              <Select value={newUserData.role} onValueChange={(value) => handleNewUserInputChange('role', value)}>
+                <SelectTrigger className="col-span-3">
+                  <SelectValue placeholder="選擇角色" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="student">學生</SelectItem>
+                  <SelectItem value="teacher">老師</SelectItem>
+                  <SelectItem value="admin">管理員</SelectItem>
+                </SelectContent>
+              </Select>
+            </div>
+          </div>
+          <DialogFooter>
+            <Button onClick={handleCreateUser}>創建</Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
     </div>
   );
 };

@@ -5,11 +5,22 @@ import path from 'path'
 
 // https://vite.dev/config/
 export default defineConfig({
+  base: './',
   plugins: [react(),tailwindcss()],
   resolve: {
     alias: {
       "@": path.resolve(__dirname, "./src"),
     },
+  },
+  build: {
+    assetsDir: 'assets',
+    rollupOptions: {
+      output: {
+        entryFileNames: `assets/[name].js`,
+        chunkFileNames: `assets/[name].js`,
+        assetFileNames: `assets/[name].[ext]`
+      }
+    }
   },
   server: {
     host: true,
@@ -25,3 +36,5 @@ export default defineConfig({
     allowedHosts: ['.manus.computer']
   }
 })
+
+

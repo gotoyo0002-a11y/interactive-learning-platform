@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import { Button } from '../ui/button'
-import { 
+import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
@@ -10,11 +10,11 @@ import {
 } from '../ui/dropdown-menu'
 import { Avatar, AvatarFallback, AvatarImage } from '../ui/avatar'
 import { useAuthStore } from '../../stores/authStore'
-import { 
-  BookOpen, 
-  User, 
-  Settings, 
-  LogOut, 
+import {
+  BookOpen,
+  User,
+  Settings,
+  LogOut,
   Menu,
   X,
   GraduationCap
@@ -27,33 +27,33 @@ export function Header() {
 
   const handleSignOut = async () => {
     await signOut()
-    navigate(\'/\')
+    navigate('/')
   }
 
   const baseNavigation = [
-    { name: \'首頁\', href: \'/\' },
-    { name: \'課程\', href: \'/courses\' },
+    { name: '首頁', href: '/' },
+    { name: '課程', href: '/courses' },
   ]
 
   let roleSpecificNavigation = []
-  if (profile?.role === \'student\') {
+  if (profile?.role === 'student') {
     roleSpecificNavigation = [
-      { name: \'我的課程\', href: \'/my-courses\' },
-      { name: \'作業中心\', href: \'/assignments\' },
+      { name: '我的課程', href: '/my-courses' },
+      { name: '作業中心', href: '/assignments' },
     ]
-  } else if (profile?.role === \'teacher\') {
+  } else if (profile?.role === 'teacher') {
     roleSpecificNavigation = [
-      { name: \'我的課程\', href: \'/my-courses\' },
-      { name: \'課程管理\', href: \'/teacher/course-management\' },
-      { name: \'作業中心\', href: \'/assignments\' },
+      { name: '我的課程', href: '/my-courses' },
+      { name: '課程管理', href: '/teacher/course-management' },
+      { name: '作業中心', href: '/assignments' },
     ]
-  } else if (profile?.role === \'admin\') {
+  } else if (profile?.role === 'admin') {
     roleSpecificNavigation = [
-      { name: \'儀表板\', href: \'/admin/dashboard\' },
-      { name: \'使用者管理\', href: \'/admin/user-management\' },
-      { name: \'課程管理\', href: \'/admin/course-management\' },
-      { name: \'我的課程\', href: \'/my-courses\' },
-      { name: \'作業中心\', href: \'/assignments\' },
+      { name: '儀表板', href: '/admin/dashboard' },
+      { name: '使用者管理', href: '/admin/user-management' },
+      { name: '課程管理', href: '/admin/course-management' },
+      { name: '我的課程', href: '/my-courses' },
+      { name: '作業中心', href: '/assignments' },
     ]
   }
 
@@ -204,4 +204,5 @@ export function Header() {
     </header>
   )
 }
+
 

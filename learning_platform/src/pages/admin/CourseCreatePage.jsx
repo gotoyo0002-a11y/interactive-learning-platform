@@ -20,7 +20,6 @@ export function CourseCreatePage() {
   const [formData, setFormData] = useState({
     title: '',
     description: '',
-    category: '',
     difficulty_level: '',
     max_students: '',
     start_date: '',
@@ -45,7 +44,7 @@ export function CourseCreatePage() {
     setSuccess('')
 
     // 驗證必填欄位
-    if (!formData.title || !formData.description || !formData.category || !formData.difficulty_level) {
+    if (!formData.title || !formData.description || !formData.difficulty_level) {
       setError('請填寫所有必填欄位')
       return
     }
@@ -155,22 +154,7 @@ export function CourseCreatePage() {
                 </CardHeader>
                 <CardContent className="space-y-4">
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                    <div>
-                      <Label htmlFor="category">課程分類 *</Label>
-                      <Select value={formData.category} onValueChange={(value) => handleInputChange('category', value)}>
-                        <SelectTrigger>
-                          <SelectValue placeholder="選擇課程分類" />
-                        </SelectTrigger>
-                        <SelectContent>
-                          {categories.map(category => (
-                            <SelectItem key={category} value={category}>
-                              {category}
-                            </SelectItem>
-                          ))}
-                        </SelectContent>
-                      </Select>
-                    </div>
-
+                    {/* Removed category selection as it's not in the backend schema */}
                     <div>
                       <Label htmlFor="difficulty_level">難度等級 *</Label>
                       <Select value={formData.difficulty_level} onValueChange={(value) => handleInputChange('difficulty_level', value)}>
@@ -293,4 +277,5 @@ export function CourseCreatePage() {
     </div>
   )
 }
+
 

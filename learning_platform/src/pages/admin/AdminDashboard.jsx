@@ -106,46 +106,46 @@ export function AdminDashboard() {
 
   const statCards = [
     {
-      title: \'課程總數\
+      title: '課程總數',
       value: stats.totalCourses,
       icon: BookOpen,
-      color: \'text-primary\
-      bgColor: \'bg-primary/10\'
+      color: 'text-primary',
+      bgColor: 'bg-primary/10'
     },
     {
-      title: \'用戶總數\
+      title: '用戶總數',
       value: stats.totalUsers,
       icon: Users,
-      color: \'text-secondary\
-      bgColor: \'bg-secondary/10\'
+      color: 'text-secondary',
+      bgColor: 'bg-secondary/10'
     },
     {
-      title: \'教師總數\
+      title: '教師總數',
       value: stats.totalTeachers,
       icon: Users,
-      color: \'text-green-600\
-      bgColor: \'bg-green-100\'
+      color: 'text-green-600',
+      bgColor: 'bg-green-100'
     },
     {
-      title: \'學生總數\
+      title: '學生總數',
       value: stats.totalStudents,
       icon: Users,
-      color: \'text-blue-600\
-      bgColor: \'bg-blue-100\'
+      color: 'text-blue-600',
+      bgColor: 'bg-blue-100'
     },
     {
-      title: \'選課總數\
+      title: '選課總數',
       value: stats.totalEnrollments,
       icon: Award,
-      color: \'text-accent\
-      bgColor: \'bg-accent/10\'
+      color: 'text-accent',
+      bgColor: 'bg-accent/10'
     },
     {
-      title: \'作業總數\
+      title: '作業總數',
       value: stats.totalAssignments,
       icon: FileText,
-      color: \'text-orange-600\
-      bgColor: \'bg-orange-100\'
+      color: 'text-orange-600',
+      bgColor: 'bg-orange-100'
     }
   ]
 

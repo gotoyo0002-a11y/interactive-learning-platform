@@ -3,12 +3,13 @@ import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'
 import { Layout } from './components/Layout/Layout'
 import { HomePage } from './pages/HomePage'
 import { LoginPage } from './pages/LoginPage'
+import { RegisterPage } from './pages/RegisterPage'
 import { CoursesPage } from './pages/CoursesPage'
 import { AdminDashboard } from './pages/admin/AdminDashboard'
 import { CourseCreatePage } from './pages/admin/CourseCreatePage'
 import UserManagementPage from './pages/admin/UserManagementPage'
 import AdminCourseManagementPage from './pages/admin/CourseManagementPage'
-import { ActivityLogs } from './pages/admin/ActivityLogs'
+import { AssignmentCenterPlaceholder } from './pages/AssignmentCenterPlaceholder'
 import CourseManagementPage from './pages/teacher/CourseManagementPage'
 import ProtectedRoute from './components/ProtectedRoute'
 import { useAuthStore } from './stores/authStore'
@@ -35,6 +36,7 @@ function App() {
         <Route path="/" element={<Layout />}>
           <Route index element={<HomePage />} />
           <Route path="login" element={<LoginPage />} />
+          <Route path="register" element={<RegisterPage />} />
           <Route path="courses" element={<CoursesPage />} />
 
           {/* Admin Routes */}
@@ -47,9 +49,12 @@ function App() {
           </Route>
 
           {/* Teacher Routes */}
-          <Route element={<ProtectedRoute allowedRoles={['teacher', 'admin']} />}>
+          <Route element={<ProtectedRoute allowedRoles={["teacher", "admin"]} />}>
             <Route path="teacher/course-management" element={<CourseManagementPage />} />
           </Route>
+
+          {/* Assignment Center Route */}
+          <Route path="assignments" element={<AssignmentCenterPlaceholder />} />
 
         </Route>
       </Routes>
